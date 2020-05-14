@@ -1,4 +1,4 @@
-#!/bin/bash test  test
+#!/bin/bash test test
 
 API="http://localhost:4741"
 URL_PATH="/sign-in"
