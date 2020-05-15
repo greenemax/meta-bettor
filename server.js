@@ -2,11 +2,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-
+const auth = require('./lib/auth')
 // require route files
-const exampleRoutes = require('./app/routes/example_routes')
+const betRoutes = require('./app/routes/bet_routes')
 const userRoutes = require('./app/routes/user_routes')
-
+const db = require('./config/db')
 // require middleware
 const errorHandler = require('./lib/error_handler')
 const replaceToken = require('./lib/replace_token')
@@ -14,11 +14,6 @@ const requestLogger = require('./lib/request_logger')
 
 // require database configuration logic
 // `db` will be the actual Mongo URI as a string
-const db = require('./config/db')
-
-// require configured passport authentication middleware
-const auth = require('./lib/auth')
-
 // define server and client ports
 // used for cors and local port declaration
 const serverDevPort = 4741
@@ -61,8 +56,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(requestLogger)
 
 // register route files
-app.use(exampleRoutes)
 app.use(userRoutes)
+app.use(betRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
