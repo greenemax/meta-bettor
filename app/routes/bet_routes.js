@@ -31,6 +31,7 @@ const router = express.Router()
 router.get('/bets', (req, res) => {
   // get the bets from the database
   Bet.find()
+    .populate('gambler_id')
     .then((bets) => res.json({ bets: bets }))
     .catch(console.error)
 })
@@ -47,36 +48,40 @@ router.post('/bets', (req, res, next) => {
     .catch(next)
 })
 
-// UPDATE
-// PATCH /bets/5a7db6c74d55bc51bdf39793
-router.patch('/bets/:id', requireToken, removeBlanks, (req, res, next) => {
-  // if the client attempts to change the `owner` property by including a new
-  // owner, prevent that by deleting that key/value pair
-  delete req.body.bet.owner
-
-Bet.findById(req.params.id)
+// Update: PATCH /books/:id delete the book
+router.patch('/bets/:id', (req, res, next) => {
+  // get id of book from params
+  const id = req.params.id
+  // get book data from request
+  const betData = req.body.bet
+  // fetching book by its id
+  Bet.findById(id)
+    // handle 404 error if no book found
     .then(handle404)
+    // update book
     .then(bet => {
-      // pass the `req` object and the Mongoose record to `requireOwnership`
-      // it will throw an error if the current user isn't the owner
-      requireOwnership(req, bet)
-
-      // pass the result of Mongoose's `.update` to the next `.then`
-      return bet.updateOne(req.body.bet)
+      // updating book object
+      // with bookData
+      Object.assign(bet, betData)
+      // save book to mongodb
+      return bet.save()
     })
-    // if that succeeded, return 204 and no JSON
+    // if successful return 204
     .then(() => res.sendStatus(204))
-    // if an error occurs, pass it to the handler
+    // on error go to next middleware
     .catch(next)
 })
 
 // Show: GET /bets/:id return the bet
 router.get('/bets/:id', (req, res) => {
   const id = req.params.id
-  const bet = bet[id]
-  res.json( { bet: bet } )
   Bet.findById(id)
-    .then(book => res.json( { bet: bet } ))
+    .populate('gambler_id')
+    // handle 404 error if no book found
+    .then(handle404)
+    // respond with json of the book
+    // use mongoose toObject on book to include virtuals
+    .then(bet => res.json({ bet: bet.toObject() }))
     .catch(console.error)
 })
 
