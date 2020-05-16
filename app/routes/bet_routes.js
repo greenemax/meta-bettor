@@ -37,11 +37,12 @@ router.get('/bets', (req, res) => {
 })
 
 // Create: POST /books save the book data
-router.post('/bets', (req, res, next) => {
+router.post('/bets', requireToken, (req, res, next) => {
   // get book data from request
-  const bet = req.body.bet
+  const betData = req.body.bet
+  betData.gambler_id = req.user._id
   // save book to mongodb
-  Bet.create(bet)
+  Bet.create(betData)
     // if successful respond with 201 and book json
     .then(bet => res.status(201).json({ bet: bet.toObject() }))
     // on error respond with 500 and error message
