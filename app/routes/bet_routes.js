@@ -27,15 +27,6 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// Index: GET /bets return all the bets
-router.get('/bets', (req, res) => {
-  // get the bets from the database
-  Bet.find()
-    .populate('gambler_id')
-    .then((bets) => res.json({ bets: bets }))
-    .catch(console.error)
-})
-
 // Create: POST /books save the book data
 router.post('/bets', requireToken, (req, res, next) => {
   // get book data from request
@@ -47,6 +38,36 @@ router.post('/bets', requireToken, (req, res, next) => {
     .then(bet => res.status(201).json({ bet: bet.toObject() }))
     // on error respond with 500 and error message
     .catch(next)
+})
+
+// Index: GET /bets return all the bets
+router.get('/bets', (req, res) => {
+  // get the bets from the database
+  Bet.find()
+    .populate('gambler_id')
+    .then((bets) => res.json({ bets: bets }))
+    .catch(console.error)
+})
+
+// SHOW
+// GET /examples/5a7db6c74d55bc51bdf39793
+router.get('/bets/:id', requireToken, (req, res, next) => {
+  // req.params.id will be set based on the `:id` in the route
+  Bet.findById(req.params.id)
+    .then(handle404)
+    // if `findById` is succesful, respond with 200 and "example" JSON
+    .then(bet => res.status(200).json({ bet: bet.toObject() }))
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
+
+// Destroy: DELETE /books/:id delete the book
+router.delete('/bets/:id', (req, res) => {
+  const id = req.params.id
+  Bet.findById(id)
+    .then(bet => bet.deleteOne())
+    .then(() => res.sendStatus(204))
+    .catch(console.error)
 })
 
 // Update: PATCH /books/:id delete the book
@@ -71,28 +92,6 @@ router.patch('/bets/:id', (req, res, next) => {
     .then(() => res.sendStatus(204))
     // on error go to next middleware
     .catch(next)
-})
-
-// Show: GET /bets/:id return the bet
-router.get('/bets/:id', (req, res) => {
-  const id = req.params.id
-  Bet.findById(id)
-    .populate('gambler_id')
-    // handle 404 error if no book found
-    .then(handle404)
-    // respond with json of the book
-    // use mongoose toObject on book to include virtuals
-    .then(bet => res.json({ bet: bet.toObject() }))
-    .catch(console.error)
-})
-
-// Destroy: DELETE /books/:id delete the book
-router.delete('/bets/:id', (req, res) => {
-  const id = req.params.id
-  Bet.findById(id)
-    .then(bet => bet.deleteOne())
-    .then(() => res.sendStatus(204))
-    .catch(console.error)
 })
 
 module.exports = router

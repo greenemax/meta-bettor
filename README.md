@@ -5,13 +5,13 @@ came up with this idea.
 
 ## Important Links
 
-- [Other Repo](www.link.com)
+- [meta-bettor-client repository](https://github.com/greenemax/meta-bettor-client)
 - [Deployed API](www.link.com)
 - [Deployed Client](www.link.com)
 
 ## Planning Story
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer id ornare magna. Curabitur leo arcu, elementum in posuere vitae, rutrum eu urna. Quisque tincidunt nulla sed mi cursus, nec tristique est fermentum. Etiam lacinia id neque ut egestas. Sed consequat convallis felis nec posuere. Sed non eros sed velit viverra tincidunt. Etiam et tortor sit amet lacus volutpat dignissim. Vestibulum convallis, felis a posuere pretium, turpis enim sollicitudin neque, pretium finibus leo metus sed sapien. Praesent iaculis pharetra nunc ac rhoncus. Duis eu risus in est porttitor egestas sit amet eget metus. Maecenas iaculis auctor ullamcorper. Donec pretium dolor non nisl egestas bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ullamcorper pulvinar orci interdum mattis. Ut gravida volutpat mauris, a semper risus maximus ut.
+I visited my buddy Dan who lives in Las Vegas last year. Dan is a successful sports bettor who frequents many different casinos, but I noticed he lacked a digital resource to log his different bets. Bets were not all placed at the same location, and they varyied in structure and amount of money invested. I knew there had to be a better way to bet - and that inspired MetaBettor, a digital betting journal where a gambler can log in. Sports bettors, casual to advanced, have a new tool to stay more aware of their bet. Track historical performance and wins and losses. 
 
 ### User Stories
 
