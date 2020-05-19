@@ -27,9 +27,9 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// Create: POST /books save the book data
+// Create: POST /bet save the book data
 router.post('/bets', requireToken, (req, res, next) => {
-  // get book data from request
+  // get bet data from request
   const betData = req.body.bet
   betData.gambler_id = req.user._id
   // save book to mongodb
@@ -40,13 +40,20 @@ router.post('/bets', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// Index: GET /bets return all the bets
-router.get('/bets', (req, res) => {
-  // get the bets from the database
+// INDEX
+// GET /examples
+router.get('/bets', requireToken, (req, res, next) => {
   Bet.find()
-    .populate('gambler_id')
-    .then((bets) => res.json({ bets: bets }))
-    .catch(console.error)
+    .then(bets => {
+      // `examples` will be an array of Mongoose documents
+      // we want to convert each one to a POJO, so we use `.map` to
+      // apply `.toObject` to each one
+      return bets.map(bet => bet.toObject())
+    })
+    // respond with status 200 and JSON of the examples
+    .then(bets => res.status(200).json({ bets: bets }))
+    // if an error occurs, pass it to the handler
+    .catch(next)
 })
 
 // SHOW
