@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // pull in Mongoose model for bets
-const Bet = require('../models/betbe
+const Bet = require('../models/bet')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -27,14 +27,14 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// Create: POST /bet save the bet data
+// Create: POST /bet save the book data
 router.post('/bets', requireToken, (req, res, next) => {
   // get bet data from request
   const betData = req.body.bet
   betData.gambler_id = req.user._id
-  // save bet to mongodb
+  // save book to mongodb
   Bet.create(betData)
-    // if successful respond with 201 and bet json
+    // if successful respond with 201 and book json
     .then(bet => res.status(201).json({ bet: bet.toObject() }))
     // on error respond with 500 and error message
     .catch(next)
@@ -68,7 +68,7 @@ router.get('/bets/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// Destroy: DELETE /bets/:id delete the bet
+// Destroy: DELETE /books/:id delete the book
 router.delete('/bets/:id', (req, res) => {
   const id = req.params.id
   Bet.findById(id)
@@ -77,22 +77,22 @@ router.delete('/bets/:id', (req, res) => {
     .catch(console.error)
 })
 
-// Update: PATCH /bets/:id delete the bet
+// Update: PATCH /books/:id delete the book
 router.patch('/bets/:id', (req, res, next) => {
-  // get id of bet from params
+  // get id of book from params
   const id = req.params.id
-  // get bet data from request
+  // get book data from request
   const betData = req.body.bet
-  // fetching bet by its id
+  // fetching book by its id
   Bet.findById(id)
-    // handle 404 error if no bet found
+    // handle 404 error if no book found
     .then(handle404)
-    // update bet
+    // update book
     .then(bet => {
-      // updating bet object
-      // with betData
+      // updating book object
+      // with bookData
       Object.assign(bet, betData)
-      // save bet to mongodb
+      // save book to mongodb
       return bet.save()
     })
     // if successful return 204
