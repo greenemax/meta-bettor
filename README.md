@@ -48,4 +48,4 @@ As a signed in user, I want to delete my bet
 
 ## Images
 
-Entity Relationship Diagram: https://imgur.com/MtZJTEc
+Entity Relationship Diagram: https://imgur.com/GLbVrkF
