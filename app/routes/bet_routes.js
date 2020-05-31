@@ -69,12 +69,12 @@ router.get('/bets/:id', requireToken, (req, res, next) => {
 })
 
 // Destroy: DELETE /books/:id delete the book
-router.delete('/bets/:id', (req, res) => {
+router.delete('/bets/:id', (req, res, next) => {
   const id = req.params.id
   Bet.findById(id)
     .then(bet => bet.deleteOne())
     .then(() => res.sendStatus(204))
-    .catch(console.error)
+    .catch(next)
 })
 
 // Update: PATCH /books/:id delete the book
